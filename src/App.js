@@ -1,7 +1,55 @@
 import './App.css';
+import Die from './components/Die';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'usehooks-ts'
+import { useState, useEffect} from "react"
+
 
 function App() {
+  const { width, height } = useWindowSize()
+
+  // initialising array of size 10 with random numbers
+  let allNewDice = () => {
+    let newArr = []
+    for (let i = 0; i < 10; i++) {
+      newArr.push({value:Math.ceil(Math.random()*6),isHeld:false,id:i})
+    }
+    return newArr
+  }
+
+  let [randomNumsArr, setRandomNumsArr] = useState(allNewDice())
+  let [tenzi, setTenzi] = useState(false)
+
+  useEffect(()=>{
+    let allHeld = randomNumsArr.every(ele => ele.isHeld)
+    let allSame = randomNumsArr.every(ele => ele.value === randomNumsArr[0].value)
+    if(allHeld && allSame)
+      {setTenzi(true)}
+  } 
+    ,[randomNumsArr])
+
+  // mapping over the random number array and setting those numbers in Die component
+  const dice = randomNumsArr.map((num) => {
+    return (<Die key={num.id} value={num.value} handleDieClick={(event)=>handleDieClick(event,num.id)} isHeld={num.isHeld}/>)
+  })
+
+  // changing the number on click of Roll button
+  function handleClick() {
+    if(!tenzi) setRandomNumsArr(oldArr => oldArr.map((ele,i) => ele.isHeld ? ele : { value: Math.ceil(Math.random() * 6), isHeld: false, id: i }))
+    else {
+      setRandomNumsArr(allNewDice())
+      setTenzi(false)
+    }
+  }
+
+
+  function handleDieClick(event,id) {
+    setRandomNumsArr(oldArr => oldArr.map(ele => {return ele.id === id ?{...ele,isHeld:!ele.isHeld}:ele}))
+  }
+
   return (
+    <>
+    {tenzi && <Confetti width={width} height={height}/>}
     <div className="App">
       <div className='hero'>
         <div className='hero--content'>
@@ -11,22 +59,14 @@ function App() {
               Click each die to freeze it at its current value between rolls.
             </p>
             <div className='game--grid'>
-              <p>1</p>
-              <p>2</p>
-              <p>3</p>
-              <p>4</p>
-              <p>5</p>
-              <p>6</p>
-              <p>7</p>
-              <p>8</p>
-              <p>9</p>
-              <p>10</p>
+              {dice}
             </div>
-            <button className='play'>Roll</button>
+            <button className='play' onClick={handleClick}>{tenzi? "New Game":"Roll"}</button>
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 }
 
