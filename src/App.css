@@ -17,7 +17,7 @@ body{
   padding: 20px;
 }
 
-h1{
+.app--title{
   text-align: center;
   margin: 25px 0;
 }

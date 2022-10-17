@@ -1,0 +1,50 @@
+.addPlayers{
+    position: relative;
+    display: flex;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background: rgba(138, 44, 226, 0.6);
+    color: white;
+}
+
+.addPlayers--content{
+    /* border: 2px solid; */
+    border-radius: 3px;
+    width: 50%;
+    background-color: #0B2434;
+    padding:0.2rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.addPlayers--inner{
+    display: flex;
+    justify-content: space-between;
+}
+
+.addPlayers--close--btn{
+    align-self: flex-start;
+    background-color: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+}
+
+.addPlayers--input{
+    margin: 10px 0;
+    border: none;
+}
+
+
+.addPlayers--input:focus{
+    outline: none;
+    border: 1px solid greenyellow;
+}
+
+.addPlayers--btn{
+    height: 30px;
+    cursor: pointer;
+}
